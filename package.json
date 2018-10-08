@@ -1,0 +1,37 @@
+{
+  "name": "hrsf105-movie-list",
+  "version": "1.0.0",
+  "description": "Movie List made with React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -d --watch",
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BalasundaramVi/movie-list.git"
+  },
+  "author": "Vignesh Balasundaram",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BalasundaramVi/movie-list/issues"
+  },
+  "homepage": "https://github.com/BalasundaramVi/movie-list#readme",
+  "dependencies": {
+    "babel-plugin-react": "^1.0.0",
+    "babel-preset-react": "^6.24.1",
+    "live-server": "^1.2.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  }
+}
