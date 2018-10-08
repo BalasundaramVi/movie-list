@@ -22,10 +22,6 @@ h2 {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.container {
-  border: 2px solid black;
-}
-
 ul {
   margin-top: 0;
   margin-bottom: 0;
@@ -41,4 +37,24 @@ li {
   color: black;
   border: 1px solid black;
   box-shadow: 2px 2px black;
+}
+
+.container {
+  border: 2px solid black;
+}
+
+.search {
+  background-color: rgba(11, 11, 75, 0.4);
+  padding: 10px;
+  width: 99%;
+}
+
+.search-button {
+  font-size: 17px;
+}
+
+#search-bar {
+  width: 85%;
+  margin: 10px;
+  font-size: 17px;
 }

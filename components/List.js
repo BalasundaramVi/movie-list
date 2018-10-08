@@ -3,7 +3,9 @@ import React from 'react';
 var List = (props) => (
   <ul className="movie-list">
     {props.movies.map((movie, i) => {
-      return(<li key={i}>{movie}</li>);
+      if (movie.display !== false) {
+        return(<li key={i}>{movie.title}</li>);
+      }
     })}
   </ul>
 );
