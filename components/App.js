@@ -18,7 +18,8 @@ export default class App extends React.Component {
     }
   }
 
-  handleSearch(string) {
+  handleSearch() {
+    var string = document.getElementById('search-bar').value
     var newState = {movies: this.state.movies.slice()}
     for (var i = 0; i < newState.movies.length; i++) {
       if (newState.movies[i].title.includes(string)) {
