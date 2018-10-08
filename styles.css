@@ -15,11 +15,26 @@ h1, h2 {
 }
 
 h2 {
+  display: inline;
+}
+
+header {
   position: relative;
   padding: 20px;
+  padding-top: 10px;
   border-bottom: 2px solid black;
   margin: 0;
   background: rgba(255, 255, 255, 0.2);
+}
+
+.button {
+  float: right;
+  margin: 10px;
+  margin-top: 0px;
+  height: 38px;
+  width: 200px;
+  border-radius: 5px;
+  background-color: white;
 }
 
 ul {
@@ -43,18 +58,21 @@ li {
   border: 2px solid black;
 }
 
-.search {
+.search, .addMovie {
   background-color: rgba(11, 11, 75, 0.4);
   padding: 10px;
-  width: 99%;
+  width: 98%;
 }
 
-.search-button {
+.search-button, .addMovie-button {
   font-size: 17px;
+  border-radius: 4px;
 }
 
-#search-bar {
+#search-bar, #addMovie-bar {
   width: 85%;
   margin: 10px;
   font-size: 17px;
+  border-radius: 2px;
+  padding: 5px;
 }
