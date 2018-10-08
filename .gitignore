@@ -5,5 +5,4 @@
 node_modules/
 
 ## Compiled files ##
-compiled/
-dist/
+movie_list.bundle.js
