@@ -12,13 +12,13 @@ export default class App extends React.Component {
       showMovieState: 'all',
       movies: {
         all: [
-          {title: 'Unfortunately no movies by that name were found ...', display: false},
+          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: true},
         ],
         watched: [
-          {title: 'Unfortunately no movies by that name were found ...', display: false},
+          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: true},
         ],
         unwatched: [
-          {title: 'Unfortunately no movies by that name were found ...', display: false},
+          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: false},
         ],
       }
     }
@@ -98,34 +98,36 @@ export default class App extends React.Component {
       }
     };
 
-    var movie;
-    for (var i = 0; i < this.state.movies.all.length; i++) {
-      if (this.state.movies.all[i].title === title) {
-        movie = this.state.movies.all[i];
+    var watchCheck;
+    for (var i = 1; i < newState.movies.all.length; i++) {
+      if (newState.movies.all[i].title === title) {
+        newState.movies.all[i].watched=!newState.movies.all[i].watched;
+        watchCheck = newState.movies.all[i].watched;
+        if (watchCheck) {
+          newState.movies.watched.push(newState.movies.all[i]);
+        } else {
+          newState.movies.unwatched.push(newState.movies.all[i]);
+        }
+        break;
       }
     }
-
-    if (movie.watched) {
-      for (var i = 0; i < newState.movies.watched.length; i++) {
-        if (newState.movies.watched[i].title === movie.title) {
-          newState.movies.watched.splice(i, 1);
-          movie.watched = !movie.watched;
-          newState.movies.unwatched.push(movie);
-          event.target.children[1].style.display = 'none';
+    
+    if(watchCheck) {
+      for (var i = 0; i < newState.movies.unwatched.length; i++) {
+        if (newState.movies.unwatched[i].title === title) {
+          newState.movies.unwatched.splice(i, 1);
+          break;
         }
       }
     } else {
-      for (var i = 0; i < newState.movies.unwatched.length; i++) {
-        if (newState.movies.unwatched[i].title === movie.title) {
-          newState.movies.unwatched.splice(i, 1);
-          movie.watched = !movie.watched;
-          newState.movies.watched.push(movie);
-          event.target.children[1].style.display = 'inline';
+      for (var i = 0; i < newState.movies.watched.length; i++) {
+        if (newState.movies.watched[i].title === title) {
+          newState.movies.watched.splice(i, 1);
+          break;
         }
       }
     }
-    console.log(this.state.movies);
-    console.log(newState.movies);
+
     this.setState(newState);
   }
 
