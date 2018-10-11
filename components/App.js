@@ -12,10 +12,10 @@ export default class App extends React.Component {
       showMovieState: 'all',
       movies: {
         all: [
-          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: true},
+          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: false},
         ],
         watched: [
-          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: true},
+          {title: 'Unfortunately no movies by that name were found ...', display: false, watched: false},
         ],
         unwatched: [
           {title: 'Unfortunately no movies by that name were found ...', display: false, watched: false},
