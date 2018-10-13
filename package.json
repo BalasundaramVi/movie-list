@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -d --watch",
     "start": "live-server",
-    "server": "nodemon ./server/app.js"
+    "server": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,13 @@
   "dependencies": {
     "babel-plugin-react": "^1.0.0",
     "babel-preset-react": "^6.24.1",
+    "body-parser": "^1.18.3",
+    "consolidate": "^0.15.1",
     "express": "^4.16.4",
+    "fetch": "^1.1.0",
     "live-server": "^1.2.0",
     "morgan": "^1.9.1",
+    "mustache": "^3.0.0",
     "mysql": "^2.16.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",

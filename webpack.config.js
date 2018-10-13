@@ -27,6 +27,8 @@ module.exports = {
     tls: 'empty',
   },
 
+  target: 'node',
+
   externals: {
     'react/addons': true,
     'react/lib/ReactContext': true,

@@ -2,8 +2,6 @@ import React from 'react';
 import List from './List.js';
 import Search from './Search.js';
 import AddMovie from './AddMovie.js';
-const request = require('request');
-
 
 export default class App extends React.Component {
   constructor(props) {
@@ -128,12 +126,9 @@ export default class App extends React.Component {
       }
     }
 
-
-
-    request.post('http://127.0.0.1:3005/', (err, res, body) => {
-      console.log('test');
-    });
-
+    fetch('localhost:3005/', {
+      method: 'GET'
+    })
     this.setState(newState);
   }
 
