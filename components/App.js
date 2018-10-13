@@ -2,6 +2,7 @@ import React from 'react';
 import List from './List.js';
 import Search from './Search.js';
 import AddMovie from './AddMovie.js';
+const request = require('request');
 
 
 export default class App extends React.Component {
@@ -88,7 +89,6 @@ export default class App extends React.Component {
   // ADD CLICK INDICATOR FOR WATCHED //
   onClick (event) {
     var title = event.target.getAttribute('title');
-
     var newState = {
       showMovieState: this.state.showMovieState, 
       movies: { 
@@ -128,6 +128,12 @@ export default class App extends React.Component {
       }
     }
 
+
+
+    request.post('http://127.0.0.1:3005/', (err, res, body) => {
+      console.log('test');
+    });
+
     this.setState(newState);
   }
 
@@ -144,6 +150,7 @@ export default class App extends React.Component {
     };
     newState.movies.all.push({title: newMovie, display: true, watched: false});
     newState.movies.unwatched.push({title: newMovie, display: true, watched: false});
+    document.getElementById('addMovie-bar').value = '';
     this.setState(newState);
   }
 

@@ -9,8 +9,4 @@ var Search = (props) => {
   )
 }
 
-var searchMovies = (e) => {
-  props.search(document.getElementById('search-bar').value);
-}
-
 export default Search;

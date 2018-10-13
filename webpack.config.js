@@ -21,6 +21,12 @@ module.exports = {
     ]
   },
 
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+  },
+
   externals: {
     'react/addons': true,
     'react/lib/ReactContext': true,
