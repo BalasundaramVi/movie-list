@@ -20,7 +20,7 @@ var port = 3005;
 app.listen(port);
 console.log(`Listening on port: ${port} ...`);
 
-
+// RENDER INITIAL PAGE //
 app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.render(path.join(__dirname, '/../index.html'));
@@ -33,3 +33,11 @@ app.get('/movie_list.bundle.js', (req, res) => {
 app.get('/styles.css', (req, res) => {
   res.sendFile(path.join(__dirname, '/../styles.css'));
 });
+
+// UPDATE PAGE WITH MOVIES FROM DATABASE //
+
+app.get('/movies', (req, res) => {
+  console.log('received input');
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({movie: 'Mean Girls'}));
+})

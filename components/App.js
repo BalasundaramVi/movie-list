@@ -23,6 +23,26 @@ export default class App extends React.Component {
     }
   }
 
+  componentWillMount() {
+    fetch('http://localhost:3005/movies', {
+      method: 'GET',
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .then((res) => {
+      res.json()
+      .then(res => {
+        this.initializeMovieList(res);
+      })
+    })
+  }
+
+  initializeMovieList(res) {
+    // TODO - INITIALIZE MOVIE LIST //
+    console.log(res);
+  };
+
   // HANDLE SEARCH FUNCTIONALITY //
   handleSearch() {
 
