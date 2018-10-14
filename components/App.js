@@ -40,7 +40,28 @@ export default class App extends React.Component {
 
   initializeMovieList(res) {
     // TODO - INITIALIZE MOVIE LIST //
-    console.log(res);
+    var newState = {
+      showMovieState: this.state.showMovieState, 
+      movies: { 
+        all: this.state.movies.all.concat(),
+        watched: this.state.movies.watched.concat(),
+        unwatched: this.state.movies.unwatched.concat()
+      }
+    };
+    for (var i = 0; i < res.length; i++) {
+      var movie = {title: res[i].title, display: true}
+      if (res[i].WATCHED === 0) {
+        movie['watched'] = false;
+        newState.movies.all.push(movie);
+        newState.movies.unwatched.push(movie);
+      } else {
+        movie['watched'] = true;
+        newState.movies.all.push(movie);
+        newState.movies.watched.push(movie);
+      }
+    }
+
+    this.setState(newState);
   };
 
   // HANDLE SEARCH FUNCTIONALITY //
@@ -146,9 +167,6 @@ export default class App extends React.Component {
       }
     }
 
-    fetch('localhost:3005/', {
-      method: 'GET'
-    })
     this.setState(newState);
   }
 
@@ -163,8 +181,15 @@ export default class App extends React.Component {
         unwatched: this.state.movies.unwatched.concat()
       }
     };
-    newState.movies.all.push({title: newMovie, display: true, watched: false});
-    newState.movies.unwatched.push({title: newMovie, display: true, watched: false});
+    var movie = {title: newMovie, display: true, watched: false};
+    newState.movies.all.push(movie);
+    newState.movies.unwatched.push(movie);
+    fetch('http://127.0.0.1:3005/newMovie', {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: movie
+    });
+
     document.getElementById('addMovie-bar').value = '';
     this.setState(newState);
   }

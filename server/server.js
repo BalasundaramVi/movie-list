@@ -37,7 +37,15 @@ app.get('/styles.css', (req, res) => {
 // UPDATE PAGE WITH MOVIES FROM DATABASE //
 
 app.get('/movies', (req, res) => {
-  console.log('received input');
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({movie: 'Mean Girls'}));
+  connection.query('SELECT * FROM movies', (err, data) => {
+    res.send(JSON.stringify(data));
+  })
 })
+
+
+// ADD A MOVIE TO THE DATABASE //
+
+app.post('/newMovie', (req, res) => {
+  console.log(req.body);
+});
