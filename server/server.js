@@ -60,7 +60,7 @@ app.get('/movies', cors(corsOptions), (req, res) => {
 // ADD A MOVIE TO THE DATABASE //
 
 app.post('/newMovie', cors(corsOptions), (req, res) => {
-  connection.query(`INSERT INTO movies (ID, title, WATCHED) VALUES (null, ?, ?)`, [req.body.title, req.body.watched], (err, data) => {
+  connection.query(`INSERT INTO movies (ID, title, WATCHED, movieID) VALUES (null, ?, ?, ?)`, [req.body.title, req.body.watched, req.body.id], (err, data) => {
     if (err) {
       console.log('Unable to insert into table');
     }

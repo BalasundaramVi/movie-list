@@ -240,7 +240,7 @@ export default class App extends React.Component {
     })
   }
 
-  // ADD MOVIE FUNCTIONALITY //
+  // SEARCH FOR MOVIE FUNCTIONALITY //
   searchMovie(event) {
     var movies = searchMDB(event.target.value);
     var newState = {
@@ -256,7 +256,6 @@ export default class App extends React.Component {
       var length = data.results.length < 5 ? data.length : 5;
       for (var i = 0; i < length; i++) {
         newState.movieSearchData.push(data.results[i]);
-        console.log(data.results[i]);
       }
       this.setState(newState);
     })
@@ -274,9 +273,9 @@ export default class App extends React.Component {
     }
   };
 
-  addMovie() {
-    var newMovie = document.getElementById('addMovie-bar').value;
-    return;
+  // ADD MOVIE FUNCTIONALITY //
+  addMovie(item) {
+
     var newState = {
       showMovieState: this.state.showMovieState,
       movieSearchData: [], 
@@ -286,7 +285,7 @@ export default class App extends React.Component {
         unwatched: this.state.movies.unwatched.concat()
       }
     };
-    var movie = {title: newMovie, watched: false};
+    var movie = {title: item.title, watched: false, id: item.id};
     if (this.state.showMovieState === 'watched') {
       movie.display = false;
     } else {
@@ -319,7 +318,7 @@ export default class App extends React.Component {
             <button id='2' className='all-movies button clicked' onClick={this.clickButton.bind(this, '2')}>All Movies</button>
           </header>
           <AddMovie search={this.searchMovie.bind(this)} add={this.addMovie.bind(this)}/>
-          {this.state.movieSearchData.length === 0 ? console.log('Nothing to Search') : <MovieSearchList items={this.state.movieSearchData}/>}
+          {this.state.movieSearchData.length === 0 ? console.log('Nothing to Search') : <MovieSearchList items={this.state.movieSearchData} addMovie={this.addMovie.bind(this)}/>}
           <Search search={this.handleSearch.bind(this)} />
           <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} clickListener={this.toggleWatch.bind(this)} />
         </div>
