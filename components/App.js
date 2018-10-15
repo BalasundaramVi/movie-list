@@ -2,7 +2,7 @@ import React from 'react';
 import List from './List.js';
 import Search from './Search.js';
 import AddMovie from './AddMovie.js';
-import MDB_API_KEY from '../MDB/MDB_API.js';
+import searchMDB from '../MDB/searchMDB';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -234,6 +234,10 @@ export default class App extends React.Component {
   }
 
   // ADD MOVIE FUNCTIONALITY //
+  searchMovie() {
+    searchMDB(newMovie);
+  };
+
   addMovie() {
     var newMovie = document.getElementById('addMovie-bar').value;
     var newState = {
