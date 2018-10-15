@@ -234,12 +234,14 @@ export default class App extends React.Component {
   }
 
   // ADD MOVIE FUNCTIONALITY //
-  searchMovie() {
-    searchMDB(newMovie);
+  searchMovie(event) {
+    var movies = searchMDB(event.target.value);
+    console.log(movies);
   };
 
   addMovie() {
     var newMovie = document.getElementById('addMovie-bar').value;
+    return;
     var newState = {
       showMovieState: this.state.showMovieState, 
       movies: { 
@@ -280,7 +282,7 @@ export default class App extends React.Component {
             <button id='1' className='to-watch-movies button' onClick={this.clickButton.bind(this, '1')}>To Watch</button>
             <button id='2' className='all-movies button clicked' onClick={this.clickButton.bind(this, '2')}>All Movies</button>
           </header>
-          <AddMovie add={this.addMovie.bind(this)}/>
+          <AddMovie search={this.searchMovie.bind(this)} add={this.addMovie.bind(this)}/>
           <Search search={this.handleSearch.bind(this)} />
           <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} clickListener={this.toggleWatch.bind(this)} />
         </div>

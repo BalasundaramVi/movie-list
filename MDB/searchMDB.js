@@ -7,8 +7,7 @@ var searchMDB = (search) => {
     method: "GET"
   }).then((res) => {
     res.json().then(data => {
-      console.log(data);
-      res.end();
+      return data;
     })
   });
 }
