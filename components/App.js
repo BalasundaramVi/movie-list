@@ -166,6 +166,17 @@ export default class App extends React.Component {
         }
       }
     }
+    var movie = {title: title}
+    if (watchCheck) {
+      movie.watched = 1;
+    } else {
+      movie.watched = 0;
+    }
+    fetch('http://127.0.0.1:3005/toggleWatched', {
+      method: "PATCH",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(movie)
+    });
 
     this.setState(newState);
   }

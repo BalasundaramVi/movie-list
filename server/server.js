@@ -59,5 +59,13 @@ app.post('/newMovie', (req, res) => {
     }
     res.end();
   });
-  console.log(req.body);
+});
+
+// TOGGLE MOVIE WATCHED STATUS //
+app.patch('/toggleWatched', (req, res) => {
+  connection.query(`UPDATE movies SET WATCHED=? WHERE title=?`, [req.body.watched, req.body.title], (err,data) => {
+    if (err) {
+      console.log('Unable to update movie');
+    }
+  });
 });
