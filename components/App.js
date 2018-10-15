@@ -3,6 +3,7 @@ import List from './List.js';
 import Search from './Search.js';
 import AddMovie from './AddMovie.js';
 import searchMDB from '../MDB/searchMDB';
+import MovieSearchList from './MovieSearchList.js';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class App extends React.Component {
 
     this.state = {
       showMovieState: 'all',
+      movieSearchData: [],
       movies: {
         all: [
           {title: 'Unfortunately no movies by that name were found ...', display: false, watched: false},
@@ -42,7 +44,8 @@ export default class App extends React.Component {
   initializeMovieList(res) {
     // TODO - INITIALIZE MOVIE LIST //
     var newState = {
-      showMovieState: this.state.showMovieState, 
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [], 
       movies: { 
         all: this.state.movies.all.concat(),
         watched: this.state.movies.watched.concat(),
@@ -70,7 +73,8 @@ export default class App extends React.Component {
 
     var string = document.getElementById('search-bar').value;
     var newState = {
-      showMovieState: this.state.showMovieState, 
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [],
       movies: { 
         all: this.state.movies.all.concat(),
         watched: this.state.movies.watched.concat(),
@@ -108,7 +112,8 @@ export default class App extends React.Component {
     }
 
     var newState = {
-      showMovieState: this.state.showMovieState, 
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [],
       movies: { 
         all: this.state.movies.all.concat(),
         watched: this.state.movies.watched.concat(),
@@ -131,7 +136,8 @@ export default class App extends React.Component {
   toggleWatch (event) {
     var title = event.target.parentElement.getAttribute('title');
     var newState = {
-      showMovieState: this.state.showMovieState, 
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [],
       movies: { 
         all: this.state.movies.all.concat(),
         watched: this.state.movies.watched.concat(),
@@ -188,7 +194,8 @@ export default class App extends React.Component {
   deleteMovie(event) {
     var title = event.target.parentElement.getAttribute('title');
     var newState = {
-      showMovieState: this.state.showMovieState, 
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [], 
       movies: { 
         all: this.state.movies.all.concat(),
         watched: this.state.movies.watched.concat(),
@@ -236,14 +243,43 @@ export default class App extends React.Component {
   // ADD MOVIE FUNCTIONALITY //
   searchMovie(event) {
     var movies = searchMDB(event.target.value);
-    console.log(movies);
+    var newState = {
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [], 
+      movies: { 
+        all: this.state.movies.all.concat(),
+        watched: this.state.movies.watched.concat(),
+        unwatched: this.state.movies.unwatched.concat()
+      }
+    };
+    movies.then(data => {
+      var length = data.results.length < 5 ? data.length : 5;
+      for (var i = 0; i < length; i++) {
+        newState.movieSearchData.push(data.results[i]);
+        console.log(data.results[i]);
+      }
+      this.setState(newState);
+    })
+    if (event.target.value === '') {
+      var newState = {
+        showMovieState: this.state.showMovieState,
+        movieSearchData: [], 
+        movies: { 
+          all: this.state.movies.all.concat(),
+          watched: this.state.movies.watched.concat(),
+          unwatched: this.state.movies.unwatched.concat()
+        }
+      };
+      this.setState(newState);
+    }
   };
 
   addMovie() {
     var newMovie = document.getElementById('addMovie-bar').value;
     return;
     var newState = {
-      showMovieState: this.state.showMovieState, 
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [], 
       movies: { 
         all: this.state.movies.all.concat(),
         watched: this.state.movies.watched.concat(),
@@ -283,6 +319,7 @@ export default class App extends React.Component {
             <button id='2' className='all-movies button clicked' onClick={this.clickButton.bind(this, '2')}>All Movies</button>
           </header>
           <AddMovie search={this.searchMovie.bind(this)} add={this.addMovie.bind(this)}/>
+          {this.state.movieSearchData.length === 0 ? console.log('Nothing to Search') : <MovieSearchList items={this.state.movieSearchData}/>}
           <Search search={this.handleSearch.bind(this)} />
           <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} clickListener={this.toggleWatch.bind(this)} />
         </div>
