@@ -2,7 +2,8 @@ import React from 'react';
 import List from './List.js';
 import Search from './Search.js';
 import AddMovie from './AddMovie.js';
-import searchMDB from '../MDB/searchMDB';
+import searchMDB from '../MDB/searchMDB.js';
+import getMovieDetails from '../MDB/getMovieDetails.js'
 import MovieSearchList from './MovieSearchList.js';
 
 export default class App extends React.Component {
@@ -53,7 +54,7 @@ export default class App extends React.Component {
       }
     };
     for (var i = 0; i < res.length; i++) {
-      var movie = {title: res[i].title, display: true}
+      var movie = {title: res[i].title, display: true, id: res[i].movieID}
       if (res[i].WATCHED === 0) {
         movie['watched'] = false;
         newState.movies.all.push(movie);
@@ -285,7 +286,16 @@ export default class App extends React.Component {
         unwatched: this.state.movies.unwatched.concat()
       }
     };
-    var movie = {title: item.title, watched: false, id: item.id};
+    var data = {};
+    var results = getMovieDetails(item.id);
+    results.then(res => {
+      data.year = res.release_date.slice(0,4);
+      data.runtime = res.runtime.toString() + ' min';
+      data.overview = res.overview;
+      data.rating = res.vote_average;
+      data.imagePath = `https://image.tmdb.org/t/p/w1280/${res.poster_path}`;
+    })
+    var movie = {title: item.title, watched: false, id: item.id, data: data};
     if (this.state.showMovieState === 'watched') {
       movie.display = false;
     } else {
@@ -301,7 +311,18 @@ export default class App extends React.Component {
     });
 
     document.getElementById('addMovie-bar').value = '';
+    console.log(newState);
     this.setState(newState);
+  }
+
+  showDetails(event) {
+    var details = getMovieDetails(event.target.id);
+    details
+    .catch(err => {
+      console.log(err);
+      console.log('CAUGHT ERROR')
+      return;
+    });
   }
 
   // RENDER //
@@ -318,9 +339,9 @@ export default class App extends React.Component {
             <button id='2' className='all-movies button clicked' onClick={this.clickButton.bind(this, '2')}>All Movies</button>
           </header>
           <AddMovie search={this.searchMovie.bind(this)} add={this.addMovie.bind(this)}/>
-          {this.state.movieSearchData.length === 0 ? console.log('Nothing to Search') : <MovieSearchList items={this.state.movieSearchData} addMovie={this.addMovie.bind(this)}/>}
+          {this.state.movieSearchData.length === 0 ? '': <MovieSearchList items={this.state.movieSearchData} addMovie={this.addMovie.bind(this)}/>}
           <Search search={this.handleSearch.bind(this)} />
-          <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} clickListener={this.toggleWatch.bind(this)} />
+          <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} showDetails={this.showDetails.bind(this)} clickListener={this.toggleWatch.bind(this)} />
         </div>
       </div>
     );
