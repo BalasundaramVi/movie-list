@@ -24,6 +24,7 @@
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.3",
     "consolidate": "^0.15.1",
+    "cors": "^2.8.4",
     "express": "^4.16.4",
     "fetch": "^1.1.0",
     "live-server": "^1.2.0",

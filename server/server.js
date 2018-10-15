@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const parser = require('body-parser');
 const connection = require('../db/connection.js');
@@ -19,6 +20,11 @@ app.use(express.static(path.join(__dirname, '../index.html')));
 var port = 3005;
 app.listen(port);
 console.log(`Listening on port: ${port} ...`);
+
+
+// SET CORS PREFLIGHT HEADERS //
+
+app.options('*', cors());
 
 // RENDER INITIAL PAGE //
 app.get('/', (req, res) => {
@@ -47,5 +53,11 @@ app.get('/movies', (req, res) => {
 // ADD A MOVIE TO THE DATABASE //
 
 app.post('/newMovie', (req, res) => {
+  connection.query(`INSERT INTO movies (ID, title, WATCHED) VALUES (null, ?, ?)`, [req.body.title, req.body.watched], (err, data) => {
+    if (err) {
+      console.log('Unable to insert into table');
+    }
+    res.end();
+  });
   console.log(req.body);
 });

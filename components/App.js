@@ -181,13 +181,19 @@ export default class App extends React.Component {
         unwatched: this.state.movies.unwatched.concat()
       }
     };
-    var movie = {title: newMovie, display: true, watched: false};
+    var movie = {title: newMovie, watched: false};
+    if (this.state.showMovieState === 'watched') {
+      movie.display = false;
+    } else {
+      movie.display = true;
+    }
     newState.movies.all.push(movie);
     newState.movies.unwatched.push(movie);
+
     fetch('http://127.0.0.1:3005/newMovie', {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: movie
+      body: JSON.stringify(movie)
     });
 
     document.getElementById('addMovie-bar').value = '';
