@@ -20,11 +20,18 @@ app.use(express.static(path.join(__dirname, '../index.html')));
 var port = 3005;
 app.listen(port);
 console.log(`Listening on port: ${port} ...`);
+console.log(cors());
+
+var corsOptions = {
+  origin: 'http://localhost:3005',
+  optionsSuccessStatus: 200,
+  'Access-Control-Alow-Origin': 'http://localhost:3005'
+}
 
 
 // SET CORS PREFLIGHT HEADERS //
 
-app.options('*', cors());
+app.options('*', cors(corsOptions));
 
 // RENDER INITIAL PAGE //
 app.get('/', (req, res) => {
@@ -42,7 +49,7 @@ app.get('/styles.css', (req, res) => {
 
 // UPDATE PAGE WITH MOVIES FROM DATABASE //
 
-app.get('/movies', (req, res) => {
+app.get('/movies', cors(corsOptions), (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   connection.query('SELECT * FROM movies', (err, data) => {
     res.send(JSON.stringify(data));
@@ -52,7 +59,7 @@ app.get('/movies', (req, res) => {
 
 // ADD A MOVIE TO THE DATABASE //
 
-app.post('/newMovie', (req, res) => {
+app.post('/newMovie', cors(corsOptions), (req, res) => {
   connection.query(`INSERT INTO movies (ID, title, WATCHED) VALUES (null, ?, ?)`, [req.body.title, req.body.watched], (err, data) => {
     if (err) {
       console.log('Unable to insert into table');
@@ -62,10 +69,22 @@ app.post('/newMovie', (req, res) => {
 });
 
 // TOGGLE MOVIE WATCHED STATUS //
-app.patch('/toggleWatched', (req, res) => {
+app.patch('/toggleWatched', cors(corsOptions), (req, res) => {
   connection.query(`UPDATE movies SET WATCHED=? WHERE title=?`, [req.body.watched, req.body.title], (err,data) => {
     if (err) {
       console.log('Unable to update movie');
     }
+    res.end();
   });
 });
+
+// REMOVE MOVIE //
+
+app.delete('/removeMovie', cors(corsOptions), (req, res) => {
+  connection.query(`DELETE FROM movies WHERE title=?`, [req.body.title], (err, data) => {
+    if (err) {
+      console.log('Unable to delete movie');
+    }
+    res.end();
+  })
+})

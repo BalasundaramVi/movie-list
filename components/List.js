@@ -5,7 +5,7 @@ var List = (props) => (
   <ul className="movie-list">
     {props.movies.map((movie, i) => {
       if (movie.display !== false) {
-        return (< MovieItem key={i} idx={i} watched={movie.watched} movie={movie} clickListener={props.clickListener}/>)
+        return (< MovieItem key={movie.title} idx={i} watched={movie.watched} remove={props.removeMovie} movie={movie} clickListener={props.clickListener}/>)
       }
     })}
   </ul>

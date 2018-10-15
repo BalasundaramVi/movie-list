@@ -23,7 +23,7 @@ export default class App extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     fetch('http://localhost:3005/movies', {
       method: 'GET',
     })
@@ -122,12 +122,13 @@ export default class App extends React.Component {
     } else {
       newState.showMovieState = 'all';
     }
+
     this.setState(newState);
   }
 
   // ADD CLICK INDICATOR FOR WATCHED //
-  onClick (event) {
-    var title = event.target.getAttribute('title');
+  toggleWatch (event) {
+    var title = event.target.parentElement.getAttribute('title');
     var newState = {
       showMovieState: this.state.showMovieState, 
       movies: { 
@@ -172,6 +173,7 @@ export default class App extends React.Component {
     } else {
       movie.watched = 0;
     }
+
     fetch('http://127.0.0.1:3005/toggleWatched', {
       method: "PATCH",
       headers: {'Content-Type': 'application/json'},
@@ -179,6 +181,55 @@ export default class App extends React.Component {
     });
 
     this.setState(newState);
+  }
+
+  // DELETE MOVIE FUNCTIONALITY //
+  deleteMovie(event) {
+    var title = event.target.parentElement.getAttribute('title');
+    var newState = {
+      showMovieState: this.state.showMovieState, 
+      movies: { 
+        all: this.state.movies.all.concat(),
+        watched: this.state.movies.watched.concat(),
+        unwatched: this.state.movies.unwatched.concat()
+      }
+    };
+
+    var status;
+    var idx;
+    for (var i=0; i < newState.movies.all.length; i++) {
+      if (newState.movies.all[i].title === title) {
+        status = newState.movies.all[i].watched;
+        idx = i;
+      }
+    }
+    newState.movies.all.splice(idx, 1);
+
+    if (status) {
+      for (var i=0; i < newState.movies.watched.length; i++) {
+        if (newState.movies.watched[i].title === title) {
+          idx = i;
+        }
+      }
+      newState.movies.watched.splice(idx, 1);
+    } else {
+      for (var i=0; i < newState.movies.unwatched.length; i++) {
+        if (newState.movies.unwatched[i].title === title) {
+          idx = i;
+        }
+      }
+      newState.movies.unwatched.splice(idx, 1);
+    }
+
+    var movie = {title: title}
+
+    fetch('http://127.0.0.1:3005/removeMovie', {
+      method: "DELETE",
+      headers: {"Content-Type":"application/json", "Access-Control-Allow-Origin": "http://localhost:3005"},
+      body: JSON.stringify(movie)
+    }).then(res => {
+      this.setState(newState);
+    })
   }
 
   // ADD MOVIE FUNCTIONALITY //
@@ -225,7 +276,7 @@ export default class App extends React.Component {
           </header>
           <AddMovie add={this.addMovie.bind(this)}/>
           <Search search={this.handleSearch.bind(this)} />
-          <List movies={this.state.movies[this.state.showMovieState]} clickListener={this.onClick.bind(this)} />
+          <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} clickListener={this.toggleWatch.bind(this)} />
         </div>
       </div>
     );
