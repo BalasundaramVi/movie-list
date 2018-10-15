@@ -8,4 +8,4 @@ node_modules/
 /movie_list.bundle.js
 
 ## The Movie Database Developer API ##
-/MDB_API.js
+MDB/MDB_API.js

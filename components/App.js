@@ -2,6 +2,7 @@ import React from 'react';
 import List from './List.js';
 import Search from './Search.js';
 import AddMovie from './AddMovie.js';
+import MDB_API_KEY from '../MDB/MDB_API.js';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -267,6 +268,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h1>MOVIE LIST APP</h1>
+        <img className='MD_logo' src='https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-green-bb4301c10ddc749b4e79463811a68afebeae66ef43d17bcfd8ff0e60ded7ce99.png'></img>
         <div id="container">
           <header>
             <h2>Movie List</h2>
