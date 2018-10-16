@@ -55,6 +55,11 @@ export default class App extends React.Component {
     };
     for (var i = 0; i < res.length; i++) {
       var movie = {title: res[i].title, display: true, id: res[i].movieID}
+      movie.year = res[i].releaseYear;
+      movie.runtime = res[i].runtime;
+      movie.overview = res[i].overview;
+      movie.rating = res[i].rating;
+      movie.imagePath = res[i].imagePath;
       if (res[i].WATCHED === 0) {
         movie['watched'] = false;
         newState.movies.all.push(movie);
@@ -65,7 +70,7 @@ export default class App extends React.Component {
         newState.movies.watched.push(movie);
       }
     }
-
+    console.log(newState);
     this.setState(newState);
   };
 
@@ -286,35 +291,36 @@ export default class App extends React.Component {
         unwatched: this.state.movies.unwatched.concat()
       }
     };
-    var data = {};
+
+    var movie = {title: item.title, watched: false, id: item.id};
     var results = getMovieDetails(item.id);
     results.then(res => {
-      data.year = res.release_date.slice(0,4);
-      data.runtime = res.runtime.toString() + ' min';
-      data.overview = res.overview;
-      data.rating = res.vote_average;
-      data.imagePath = `https://image.tmdb.org/t/p/w1280/${res.poster_path}`;
+      movie.year = res.release_date.slice(0,4);
+      movie.runtime = res.runtime.toString();
+      movie.overview = res.overview;
+      movie.rating = res.vote_average;
+      movie.imagePath = `https://image.tmdb.org/t/p/w1280/${res.poster_path}`;
+    }).then(res => {
+      fetch('http://127.0.0.1:3005/newMovie', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(movie)
+      });
+    }).then(res2 => {
+      if (this.state.showMovieState === 'watched') {
+        movie.display = false;
+      } else {
+        movie.display = true;
+      }
+      newState.movies.all.push(movie);
+      newState.movies.unwatched.push(movie);
+  
+      document.getElementById('addMovie-bar').value = '';
+      this.setState(newState);
     })
-    var movie = {title: item.title, watched: false, id: item.id, data: data};
-    if (this.state.showMovieState === 'watched') {
-      movie.display = false;
-    } else {
-      movie.display = true;
-    }
-    newState.movies.all.push(movie);
-    newState.movies.unwatched.push(movie);
-
-    fetch('http://127.0.0.1:3005/newMovie', {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(movie)
-    });
-
-    document.getElementById('addMovie-bar').value = '';
-    console.log(newState);
-    this.setState(newState);
   }
 
+  // SHOW MOVIE DETAILS //
   showDetails(event) {
     var details = getMovieDetails(event.target.id);
     details
