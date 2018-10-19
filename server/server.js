@@ -60,7 +60,6 @@ app.get('/movies', cors(corsOptions), (req, res) => {
 // ADD A MOVIE TO THE DATABASE //
 
 app.post('/newMovie', cors(corsOptions), (req, res) => {
-  console.log(req.body);
   connection.query(`INSERT INTO movies (ID, title, WATCHED, movieID, releaseYear, runtime, overview, rating, imagePath) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)`, [req.body.title, req.body.watched, req.body.id, req.body.year, req.body.runtime, req.body.overview, req.body.rating, req.body.imagePath], (err, data) => {
     if (err) {
       console.log(err);
