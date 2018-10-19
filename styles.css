@@ -1,7 +1,7 @@
 html {
   font-family: Tahoma sans-serif;
   background: url(https://i.imgur.com/zy2kufD.jpg) top center;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-size: 100%;
 }
 
@@ -94,6 +94,14 @@ li:hover {
   border-radius: 4px;
 }
 
+.watched:hover {
+  border: 2px solid green;
+}
+
+.unwatched:hover {
+  border: 2px solid green;
+}
+
 .clicked {
   background-color: rgba(78, 243, 255, 0.75);
 }
@@ -160,7 +168,7 @@ li:hover {
 
 .MovieSearchItem {
   margin-left: 5px;
-  margin-right: 2px;
+  margin-right: 0px;
   padding-left: 5px;
   margin-bottom: 2px;
   color: black;
@@ -180,4 +188,44 @@ p.searchMovieReleaseDate {
   padding: 0px 0px;
   margin: 0px 0px;
   float: right;
+}
+
+.movieDetails {
+  width: 60%;
+  display: inline-block;
+  margin-right: 0px;
+}
+
+#overview {
+  width: 100%;
+}
+
+.detail {
+  display: block;
+  margin: 10px;
+  width: fit-content;
+  padding-right: 0px;
+  margin-right: 0px;
+}
+
+.label {
+  font-weight: 700;
+}
+
+.overviewtext{
+  display: inline-block;
+}
+
+.detailsContainer {
+  padding-top: 15px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.5);
+}
+
+.poster {
+  border: 1px solid black;
+  display: inline-block;
+  background-color: black;
+  padding: 5px;
+  float: right;
+  width: 20%;
 }

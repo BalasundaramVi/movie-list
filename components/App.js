@@ -43,7 +43,6 @@ export default class App extends React.Component {
   }
 
   initializeMovieList(res) {
-    // TODO - INITIALIZE MOVIE LIST //
     var newState = {
       showMovieState: this.state.showMovieState,
       movieSearchData: [], 
@@ -60,6 +59,7 @@ export default class App extends React.Component {
       movie.overview = res[i].overview;
       movie.rating = res[i].rating;
       movie.imagePath = res[i].imagePath;
+      movie.showDetails = false;
       if (res[i].WATCHED === 0) {
         movie['watched'] = false;
         newState.movies.all.push(movie);
@@ -70,7 +70,6 @@ export default class App extends React.Component {
         newState.movies.watched.push(movie);
       }
     }
-    console.log(newState);
     this.setState(newState);
   };
 
@@ -116,7 +115,6 @@ export default class App extends React.Component {
         buttons[i].classList.remove('clicked');
       }
     }
-
     var newState = {
       showMovieState: this.state.showMovieState,
       movieSearchData: [],
@@ -142,7 +140,7 @@ export default class App extends React.Component {
   toggleWatch (event) {
     var title = event.target.parentElement.getAttribute('title');
     var newState = {
-      showMovieState: this.state.showMovieState,
+      showMovieState: this.state.showMovieState.concat(),
       movieSearchData: [],
       movies: { 
         all: this.state.movies.all.concat(),
@@ -150,11 +148,10 @@ export default class App extends React.Component {
         unwatched: this.state.movies.unwatched.concat()
       }
     };
-
     var watchCheck;
     for (var i = 1; i < newState.movies.all.length; i++) {
       if (newState.movies.all[i].title === title) {
-        newState.movies.all[i].watched=!newState.movies.all[i].watched;
+        newState.movies.all[i].watched = !(newState.movies.all[i].watched);
         watchCheck = newState.movies.all[i].watched;
         if (watchCheck) {
           newState.movies.watched.push(newState.movies.all[i]);
@@ -192,7 +189,6 @@ export default class App extends React.Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(movie)
     });
-
     this.setState(newState);
   }
 
@@ -259,7 +255,7 @@ export default class App extends React.Component {
       }
     };
     movies.then(data => {
-      var length = data.results.length < 5 ? data.length : 5;
+      var length = data.results.length < 5 ? data.results.length : 5;
       for (var i = 0; i < length; i++) {
         newState.movieSearchData.push(data.results[i]);
       }
@@ -299,6 +295,7 @@ export default class App extends React.Component {
       movie.runtime = res.runtime.toString();
       movie.overview = res.overview;
       movie.rating = res.vote_average;
+      movie.showDetails = false;
       movie.imagePath = `https://image.tmdb.org/t/p/w1280/${res.poster_path}`;
     }).then(res => {
       fetch('http://127.0.0.1:3005/newMovie', {
@@ -331,10 +328,33 @@ export default class App extends React.Component {
     });
   }
 
+  // TOGGLE MOVIE DETAILS //
+  toggleDetails(event) {
+    if (event.target.id === '') {
+      return;
+    }
+    var newState = {
+      showMovieState: this.state.showMovieState,
+      movieSearchData: [], 
+      movies: { 
+        all: this.state.movies.all.concat(),
+        watched: this.state.movies.watched.concat(),
+        unwatched: this.state.movies.unwatched.concat()
+      }
+    };
+
+    for (var i = 0; i < newState.movies[newState.showMovieState].length; i++) {
+      if (Number(event.target.id) === newState.movies[newState.showMovieState][i].id) {
+        newState.movies[newState.showMovieState][i].showDetails = !newState.movies[newState.showMovieState][i].showDetails;
+      }
+    }
+    this.setState(newState);
+  }
+
   // RENDER //
   render() {
     return (
-      <div>
+      <div className='application'>
         <h1>MOVIE LIST APP</h1>
         <img className='MD_logo' src='https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-green-bb4301c10ddc749b4e79463811a68afebeae66ef43d17bcfd8ff0e60ded7ce99.png'></img>
         <div id="container">
@@ -347,7 +367,7 @@ export default class App extends React.Component {
           <AddMovie search={this.searchMovie.bind(this)} add={this.addMovie.bind(this)}/>
           {this.state.movieSearchData.length === 0 ? '': <MovieSearchList items={this.state.movieSearchData} addMovie={this.addMovie.bind(this)}/>}
           <Search search={this.handleSearch.bind(this)} />
-          <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} showDetails={this.showDetails.bind(this)} clickListener={this.toggleWatch.bind(this)} />
+          <List movies={this.state.movies[this.state.showMovieState]} removeMovie={this.deleteMovie.bind(this)} showDetails={this.toggleDetails.bind(this)} clickListener={this.toggleWatch.bind(this)} />
         </div>
       </div>
     );
